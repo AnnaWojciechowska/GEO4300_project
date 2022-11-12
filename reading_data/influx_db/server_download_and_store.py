@@ -57,7 +57,7 @@ def parse_response(res, LOGGER, logs_dir):
     df['lat'] = header['Latitude']
     df['lon'] = header['Longitude']
     df['ref'] = header['Reference level']
-    # tutajcorrect that tooo!!!
+    # data is kept in  UTS, timezone shift can be discarrded
     df['timestamp'] = df['timestamp'].apply(lambda x: x.split('+')[0])
     df['timestamp'] = df['timestamp'].apply(lambda x: dt.strptime(x,"%Y-%m-%dT%H:%M:%S"))
   
@@ -115,10 +115,12 @@ start_date = '2022-01-01' # yyyy-mm-dd
 end_date = '2022-10-01'
 data_type = 'OBS'
 #url= url_template.format(lat, lon, datatype, place, start_date, end_date)
+# we are using timezone=0 wich is UTC time
+
 url_template = 'http://api.sehavniva.no/tideapi.php?tide_request=locationdata&lat={}&lon={}\
 &datatype={}\
 &file=txt&lang=en&place={}\
-&dst=1&refcode=CD&fromtime={}&totime={}&interval=10'
+&dst=1&refcode=CD&fromtime={}&totime={}&timezone=0&interval=10'
 
 urls = []
 
