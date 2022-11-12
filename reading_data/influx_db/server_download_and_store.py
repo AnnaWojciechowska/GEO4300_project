@@ -27,10 +27,23 @@ def store_measurement(df):
         tagDict['siteName'] = row['site']
         tagDict['referenceLevel'] = row['ref']
         fieldDict = {}
-        fieldDict['level'] = row['level']
+        fieldDict['level'] = float(row['level'])
+ 
+        insert_new_point(INFLUXDB_CLIENT, measurement, tagDict, fieldDict, LOGGER, row['timestamp'])
+
+def store_missing_data_info(df):
+    measurement = 'missing_data'
+    for i, row in df.iterrows():
+        tagDict = {}
+        #columns = ['timestamp', 'count_no', 'site', 'ref']
+        tagDict['siteName'] = row['site']
+        tagDict['referenceLevel'] = row['ref']
+        fieldDict = {}
+        fieldDict['count_no'] = 1
  
         insert_new_point(INFLUXDB_CLIENT, measurement, tagDict, fieldDict, LOGGER, row['timestamp'])
         
+
 def extract_header_and_data(lines):
     header, data = [], 'timestamp  level\n'
     for line in lines:
@@ -65,16 +78,19 @@ def parse_response(res, LOGGER, logs_dir):
     # dealing with nan values:
     # we extract them from main df and keep in seprate df
     nan_df = df[df['level'].isna()]
+
     if nan_df.shape[0] > 0:
         print("nans!")
         df.drop(nan_df.index.to_list(), inplace=True)
+        nan_df.reset_index(inplace=True)
+
         # choose what is better way to handle: 
         nan_csv_filenamane = os.path.join(logs_dir, df.iloc[0]['site'] + ".csv")
         nan_df.to_csv(nan_csv_filenamane, index=False)
         LOGGER.info("Nan values: {}".format(nan_df.shape[0]))
         LOGGER.info(nan_df.to_csv())
 
-    return df
+    return df, nan_df
 
 
 
@@ -110,13 +126,11 @@ LOGGER.info("end script")
 
 
 tide_stations = pd.read_csv('data/tide_stations_loc.csv')
-start_date = '2022-01-01' # yyyy-mm-dd
-#tutaj
-end_date = '2022-10-01'
+start_date = '2022-06-01' # yyyy-mm-dd
+end_date = '2022-07-01'
 data_type = 'OBS'
 #url= url_template.format(lat, lon, datatype, place, start_date, end_date)
 # we are using timezone=0 wich is UTC time
-
 url_template = 'http://api.sehavniva.no/tideapi.php?tide_request=locationdata&lat={}&lon={}\
 &datatype={}\
 &file=txt&lang=en&place={}\
@@ -143,11 +157,15 @@ for url in urls:
     else:
         #print(res.text)
         #print("tutaj")
-        temp_df = parse_response(res, LOGGER, log_dir)
-        df = pd.concat([df, temp_df])
-df.reset_index(drop=True, inplace=True)
+        data_df, missing_df = parse_response(res, LOGGER, log_dir)
+       
+        if not args.dry_run: 
+            store_measurement(data_df)
+            store_missing_data_info(missing_df)
+        #df = pd.concat([df, temp_df])
+#df.reset_index(drop=True, inplace=True)
 
-if not args.dry_run:
-    store_measurement(df)
+#if not args.dry_run:
+#    store_measurement(df)
 
 LOGGER.info("end  script")
