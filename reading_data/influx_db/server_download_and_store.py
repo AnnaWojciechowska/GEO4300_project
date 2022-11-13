@@ -126,9 +126,8 @@ time_hour_ago = dt.utcnow() - timedelta(hours=1)
 start_time = time_hour_ago.strftime('%Y-%m-%dT%H:00:00')
 end_time = time_hour_ago.strftime('%Y-%m-%dT%H:50:00')
 
-#tutaj remove me
-#start_time = '2022-01-01T00:00:00'
-#end_time = '2022-01-01T01:00:00'
+#start_time = '2022-11-12T00:10:00'
+#end_time = '2022-11-13T16:50:00'
 
 data_type = 'OBS'
 #url= url_template.format(lat, lon, datatype, place, start_date, end_date)
