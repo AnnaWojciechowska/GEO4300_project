@@ -2,12 +2,9 @@
 
 import pandas as pd
 from datetime import datetime as dt
-import time
-
-import traceback
+from datetime import timedelta
 import json
 from influxdb import InfluxDBClient
-from influxdb.exceptions import InfluxDBClientError, InfluxDBServerError
 import requests
 import io
 import os
@@ -15,8 +12,6 @@ import os
 from influx_tools import *
 
 import argparse
-
-
 
 
 def store_measurement(df):
@@ -27,6 +22,7 @@ def store_measurement(df):
         tagDict['siteName'] = row['site']
         tagDict['referenceLevel'] = row['ref']
         fieldDict = {}
+        # 2 decimal places, float is safe
         fieldDict['level'] = float(row['level'])
  
         insert_new_point(INFLUXDB_CLIENT, measurement, tagDict, fieldDict, LOGGER, row['timestamp'])
@@ -74,13 +70,11 @@ def parse_response(res, LOGGER, logs_dir):
     df['timestamp'] = df['timestamp'].apply(lambda x: x.split('+')[0])
     df['timestamp'] = df['timestamp'].apply(lambda x: dt.strptime(x,"%Y-%m-%dT%H:%M:%S"))
   
-
     # dealing with nan values:
     # we extract them from main df and keep in seprate df
     nan_df = df[df['level'].isna()]
 
     if nan_df.shape[0] > 0:
-        print("nans!")
         df.drop(nan_df.index.to_list(), inplace=True)
         nan_df.reset_index(inplace=True)
 
@@ -126,21 +120,29 @@ LOGGER.info("end script")
 
 
 tide_stations = pd.read_csv('data/tide_stations_loc.csv')
-start_date = '2022-06-01' # yyyy-mm-dd
-end_date = '2022-07-01'
+
+#automatic updates:
+time_hour_ago = dt.utcnow() - timedelta(hours=1)
+start_time = time_hour_ago.strftime('%Y-%m-%dT%H:00:00')
+end_time = time_hour_ago.strftime('%Y-%m-%dT%H:50:00')
+
+#tutaj remove me
+#start_time = '2022-01-01T00:00:00'
+#end_time = '2022-01-01T01:00:00'
+
 data_type = 'OBS'
 #url= url_template.format(lat, lon, datatype, place, start_date, end_date)
 # we are using timezone=0 wich is UTC time
 url_template = 'http://api.sehavniva.no/tideapi.php?tide_request=locationdata&lat={}&lon={}\
 &datatype={}\
 &file=txt&lang=en&place={}\
-&dst=1&refcode=CD&fromtime={}&totime={}&timezone=0&interval=10'
+&dst=1&refcode=CD&fromtime={}&totime={}&tzone=0&interval=10'
 
 urls = []
 
 for i, row in tide_stations.iterrows():
-    url = url_template.format(row['latitude'], row['longitude'], data_type, row['code'], start_date, end_date)
-    print(url)
+    url = url_template.format(row['latitude'], row['longitude'], data_type, row['code'], start_time, end_time)
+    #print(url)
     urls.append(url)
     
 columns = ['timestamp', 'level', 'site', 'lat', 'lon', 'ref']
@@ -155,8 +157,6 @@ for url in urls:
     if res.status_code != 200:
         print("ups, rquest error for ", url)
     else:
-        #print(res.text)
-        #print("tutaj")
         data_df, missing_df = parse_response(res, LOGGER, log_dir)
        
         if not args.dry_run: 
@@ -164,8 +164,5 @@ for url in urls:
             store_missing_data_info(missing_df)
         #df = pd.concat([df, temp_df])
 #df.reset_index(drop=True, inplace=True)
-
-#if not args.dry_run:
-#    store_measurement(df)
 
 LOGGER.info("end  script")
