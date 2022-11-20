@@ -1,5 +1,5 @@
 # GEO4300_project
-This readme contains code for project "Tidal characteristics along the Norwegian coast"  
+This readme contains description of files structure for project "Tidal characteristics along the Norwegian coast"  
 ## folders structrue ##
 ### harmonic analysis ###
 The folder harmonic analysis contains the main jupyter notebook for the calculations and plotting in this project. It also contains two python modules used in the calculations and an Excel spreadsheet with information on tidal constituents.
