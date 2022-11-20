@@ -29,12 +29,37 @@
   "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "40UI8W74k"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 29,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# This dashoard presents water level measured at permament tide stations in Norway    \ndata sourcee: [www.kartverket.no](https://www.kartverket.no/en/at-sea/se-havniva/tides-and-water-level/permanent-tide-gauges)  \nThe data is collected every hour.   \nMeasurements are done every 10 minutes.    \n24 permanent tide gauges in Norway: 23 are located along the Norwegian coast and one is located in Ny-Ålesund on Svalbard.  \nPlease choose 2 tide stations from menu above to compare. \n\nThe dashboard was done as project for [GEO4300](https://www.uio.no/studier/emner/matnat/geofag/GEO4300/) at Oslo University, 2022   \nProject particpants:   \nErik Marthinsen  and Anna Wojciechowska  \ncontact: anna.wojciechowska@gmail.com",
+        "mode": "markdown"
+      },
+      "pluginVersion": "9.2.3",
+      "title": "Information",
+      "type": "text"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 15,
       "panels": [],
@@ -79,7 +104,7 @@
         "h": 11,
         "w": 11,
         "x": 0,
-        "y": 1
+        "y": 9
       },
       "id": 9,
       "options": {
@@ -241,6 +266,7 @@
         "type": "influxdb",
         "uid": "40UI8W74k"
       },
+      "description": "Location of all Norwegian tide stations",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -272,16 +298,17 @@
       },
       "gridPos": {
         "h": 11,
-        "w": 11,
+        "w": 13,
         "x": 11,
-        "y": 1
+        "y": 9
       },
       "id": 4,
       "options": {
         "basemap": {
           "config": {},
           "name": "Layer 0",
-          "type": "default"
+          "tooltip": true,
+          "type": "osm-standard"
         },
         "controls": {
           "mouseWheelZoom": true,
@@ -297,7 +324,7 @@
               "showLegend": true,
               "style": {
                 "color": {
-                  "fixed": "red"
+                  "fixed": "dark-red"
                 },
                 "opacity": 1,
                 "rotation": {
@@ -307,7 +334,7 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 3,
+                  "fixed": 1,
                   "max": 15,
                   "min": 2
                 },
@@ -338,7 +365,7 @@
               "longitude": "lon",
               "mode": "coords"
             },
-            "name": "Layer 1",
+            "name": "permament tide stations",
             "tooltip": true,
             "type": "markers"
           }
@@ -349,9 +376,9 @@
         "view": {
           "allLayers": true,
           "id": "coords",
-          "lat": 65,
-          "lon": 17,
-          "zoom": 2
+          "lat": 70,
+          "lon": 28.755497,
+          "zoom": 2.8
         }
       },
       "pluginVersion": "9.2.3",
@@ -361,7 +388,7 @@
             "type": "influxdb",
             "uid": "40UI8W74k"
           },
-          "query": "select * from tide_stations",
+          "query": "select * from tide_stations   ",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "table"
@@ -376,7 +403,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 20
       },
       "id": 24,
       "panels": [],
@@ -473,9 +500,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 22,
+        "w": 24,
         "x": 0,
-        "y": 13
+        "y": 21
       },
       "id": 11,
       "options": {
@@ -554,10 +581,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 10,
+        "h": 13,
+        "w": 11,
         "x": 0,
-        "y": 22
+        "y": 30
       },
       "id": 5,
       "options": {
@@ -627,10 +654,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 12,
-        "x": 10,
-        "y": 22
+        "h": 13,
+        "w": 13,
+        "x": 11,
+        "y": 30
       },
       "id": 13,
       "options": {
@@ -665,7 +692,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 43
       },
       "id": 22,
       "panels": [],
@@ -733,7 +760,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 35
+        "y": 44
       },
       "id": 19,
       "options": {
@@ -825,7 +852,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 35
+        "y": 44
       },
       "id": 25,
       "options": {
@@ -865,7 +892,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 43
+        "y": 52
       },
       "id": 27,
       "options": {
@@ -874,7 +901,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "# informaton\n\nThere are 3600 observations daily.  \n\"No data\" in \"missing data\" charts means - there's no missing data (all observations were stored and are avialalbe)",
+        "content": "# informaton\n\nThere are 144 observations for each station daily.  \n\"No data\" in \"missing data\" charts means - there's no missing data (all observations were stored and are avialalbe)\nKnown missing data:  \n2022:  \nKristansund: [KSU](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&from=1658440800000&to=1658699999000&var-station_name1=Kristiansund&var-code1=KSU&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d)    \nHonningsvåg: [HVG](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&from=1665871200000&to=1666475999000&var-station_name1=Honningsv%C3%A5g&var-code1=HVG&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d)    \nHammerfest: [HFT](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&from=1655111104657&to=1655347583863&var-station_name1=Hammerfest&var-code1=HFT&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d)  \n2021:  \nHonningsvåg: [HVG](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&var-station_name1=Honningsv%C3%A5g&var-code1=HVG&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d&from=1632193321081&to=1634042773234)  \nNy-ålesund: [NYA](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&var-station_name1=Ny-%C3%A5lesund&var-code1=NYA&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d&from=1631931802433&to=1632365595286)  \nTrondhein: [TRD](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&var-station_name1=Trondheim&var-code1=TRD&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d&from=1620295228091&to=1620398132576)  \nViker: [VIK](http://bolge.vps.webdock.cloud:3000/d/1FHI8WnVz/tides?orgId=1&var-station_name1=Viker&var-code1=VIK&var-station_name2=Bod%C3%B8&var-code2=BOO&var-inter=1d&from=1625449065488&to=1625652154516)  ",
         "mode": "markdown"
       },
       "pluginVersion": "9.2.3",
@@ -899,8 +926,10 @@
           "uid": "40UI8W74k"
         },
         "definition": "show tag values with key = station_name",
+        "description": "location of tide gauge",
         "hide": 0,
         "includeAll": false,
+        "label": "station 1",
         "multi": false,
         "name": "station_name1",
         "options": [],
@@ -924,6 +953,7 @@
         "definition": "SHOW TAG VALUES WITH KEY = code  WHERE station_name = '$station_name1'",
         "hide": 1,
         "includeAll": false,
+        "label": "code",
         "multi": false,
         "name": "code1",
         "options": [],
@@ -945,9 +975,10 @@
           "uid": "40UI8W74k"
         },
         "definition": "show tag values with key = station_name",
+        "description": "location of tide gauge 2",
         "hide": 0,
         "includeAll": false,
-        "label": "station name 2",
+        "label": "station 2",
         "multi": false,
         "name": "station_name2",
         "options": [],
@@ -969,6 +1000,7 @@
           "uid": "40UI8W74k"
         },
         "definition": "SHOW TAG VALUES WITH KEY = code  WHERE station_name = '$station_name2'",
+        "description": "code of station 2",
         "hide": 1,
         "includeAll": false,
         "label": "code",
@@ -1059,9 +1091,9 @@
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "utc",
+  "timezone": "",
   "title": "tides",
   "uid": "1FHI8WnVz",
-  "version": 52,
+  "version": 76,
   "weekStart": ""
 }
