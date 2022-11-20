@@ -8,9 +8,7 @@ import io
 from datetime import datetime as dt
 
 def extract_header_and_data(lines):
-    """ Write documentation for the function
-    """
-
+    
     header = []
     data = 'Timestamp  Level\n'
     for line in lines:

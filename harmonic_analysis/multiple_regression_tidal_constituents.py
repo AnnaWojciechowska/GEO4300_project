@@ -4,14 +4,13 @@ import statsmodels.formula.api as smf
 from scipy import stats
 
 def multiple_regression(df_obs, tidal_constituents, significance_level=0.05):
-    """ Documentation for this function!
-    
+    """ Do a multiple regression analysis on water level data
     """
 
     alpha = significance_level
+    
     # Prepare for looping over the number of possible tidal constituents to 
     # include in the multiple regression
-
     list_of_most_important_constituents = []
     tidal_constituents_loop = tidal_constituents.copy()
     df_obs['residual'] = df_obs['level_demean'].copy()
