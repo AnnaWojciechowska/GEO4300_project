@@ -27,11 +27,14 @@ python 3.x
 pandas 1.4.4  
 numpy 1.21.6  
 matplotlib 3.1.0  
-scipy 1.6.2  
-requests 2.22.0 
-statmodels 0.13.2
-influxdb 5.3.1  
+scipy 1.6.2   
+requests 2.22.0   
+statmodels 0.13.2  
+influxdb 5.3.1    
 
-influx version 1.8
+influx version 1.8  
+https://docs.influxdata.com/influxdb/v1.8/  
+grafana 9.2.3  
+https://grafana.com/docs/grafana/latest/  
 
 
